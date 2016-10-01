@@ -29,6 +29,8 @@ function preload(){
 function create(){		
 	startGameKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 	game.physics.startSystem(Phaser.Physics.ARCADE);
+	game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+	game.input.onDown.add(goFullscreen, this);
 	FieldCreate(game);
 	AudioCreate();
 	SideFieldCreate(game);
@@ -49,7 +51,20 @@ function create(){
 
 function DisplayMainMenu(){
 	menuObject = game.add.sprite(0,0,'menuScreen');
+}
 
+function goFullscreen(){
+	if (this.game.scale.isFullScreen) {
+		game.scale.stopFullScreen();
+	} else {
+		//resets alignment and enters fullscreen
+		//not needed if alignment isn't changed to true beforehand
+		game.scale.setMaximum();
+		game.scale.setScreenSize(true);
+		game.scale.pageAlignVertically = false;
+		game.scale.pageAlignHorizontally = false;
+		game.scale.startFullScreen(false); //true=antialiasing ON, false=antialiasing off
+	}
 }
 
 function update(){
